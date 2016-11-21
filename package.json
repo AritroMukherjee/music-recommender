@@ -1,0 +1,35 @@
+{
+  "name": "music-recommender",
+  "version": "0.1.0",
+  "description": "music recommendation system for a fictional social music service",
+  "main": "index.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wachunga/music-recommender"
+  },
+  "engines": {
+    "node": ">= 6"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --recursive",
+    "test-unit": "mocha test/unit",
+    "recommend": "mocha test/integration/app -g 'can bootstrap and recommend'"
+  },
+  "author": "David Hirtle <david.hirtle@gmail.com>",
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "debug": "2.3.3",
+    "express": "4.14.0",
+    "lodash": "4.17.2"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "chai-as-promised": "6.0.0",
+    "mocha": "3.1.2",
+    "sinon": "1.17.6",
+    "supertest": "2.0.1"
+  }
+}
