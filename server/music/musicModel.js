@@ -1,26 +1,33 @@
 'use strict';
 
 const _ = require('lodash');
+const Music = require('./music');
+
+const musicMap = new Map();
+
+function init() {
+	const musicJson = require('../../data/music.json'); // eslint-disable-line global-require
+	_.each(musicJson, (tags, musicId) =>
+		musicMap.set(musicId, new Music(musicId, tags))
+	);
+}
+
+init();
 
 const musicModel = module.exports = {};
 
-const music = require('../../data/music.json');
-
-// TODO: introduce Music class to avoid passing around literals
-// music will still a map with id as the key
-
 musicModel.getMusicCount = function () {
-	return Promise.resolve(Object.keys(music).length);
+	return Promise.resolve(musicMap.size);
 };
 
 musicModel.getAll = function () {
-	return Promise.resolve(_.map(music, (tags, musicId) => ({ tags, music: musicId })));
+	return Promise.resolve(Array.from(musicMap.values()));
 };
 
 musicModel.getTagsForMusic = function (musicId) {
-	if (music[musicId] === undefined) {
+	if (!musicMap.has(musicId)) {
 		return Promise.reject(new Error(`no music found with id ${musicId}`));
 	}
 
-	return Promise.resolve(music[musicId] || []);
+	return Promise.resolve(musicMap.get(musicId).tags || []);
 };

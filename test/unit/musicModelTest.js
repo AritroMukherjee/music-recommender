@@ -1,5 +1,7 @@
 'use strict';
 
+const _ = require('lodash');
+
 const musicModel = require('../../server/music/musicModel');
 
 describe('musicModel', () => {
@@ -9,7 +11,13 @@ describe('musicModel', () => {
 
 	describe('getAll', () => {
 		it('returns all', () => {
-			return expect(musicModel.getAll()).to.eventually.have.length(12);
+			return musicModel.getAll().then((music) => {
+				expect(music).to.have.length(12);
+
+				const sampleMusic = _.first(music);
+				expect(sampleMusic).to.have.property('tags');
+				expect(sampleMusic).to.have.property('id');
+			});
 		});
 	});
 

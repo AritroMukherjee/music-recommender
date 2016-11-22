@@ -27,7 +27,7 @@ recommender.recommend = function (user, recentRecommendations) {
 			debug('simpleTagRecommender recommended', recommended);
 			const commonTags = _.intersection(recommended.tags, _.keys(tagFrequency));
 			return {
-				music: recommended.music,
+				music: recommended.id,
 				explanation: explanation.tag(_.first(commonTags))
 			};
 		});
@@ -51,18 +51,18 @@ function getMusicScores(user, tagFrequency, recentRecommendations) {
 		musicModel.getAll()
 	]).then((values) => {
 		const [listenedMap, allMusic] = values;
-		const newMusic = _.reject(allMusic, (musicEntry) => {
-			const recommendationOverlap = _.includes(recentRecommendations, musicEntry.music);
-			const alreadyListened = listenedMap[musicEntry.music];
+		const newMusic = _.reject(allMusic, (music) => {
+			const recommendationOverlap = _.includes(recentRecommendations, music.id);
+			const alreadyListened = listenedMap[music.id];
 			return recommendationOverlap || alreadyListened;
 		});
 
-		const musicScores = newMusic.map((musicEntry) => {
+		const musicScores = newMusic.map((music) => {
 			let score = 0;
-			musicEntry.tags.forEach((tag) => {
+			music.tags.forEach((tag) => {
 				score += (tagFrequency[tag] || 0);
 			});
-			return { score, music: musicEntry };
+			return { score, music };
 		});
 		return _.sortBy(musicScores, 'score').reverse();
 	});
