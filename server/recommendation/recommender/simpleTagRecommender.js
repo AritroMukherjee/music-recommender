@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const debug = require('debug')('recommend:simple');
+const debug = require('debug')('recommend:tag');
 
 const listenModel = require('../../listen/listenModel');
 const musicModel = require('../../music/musicModel');
@@ -52,9 +52,9 @@ function getMusicScores(user, tagFrequency, recentRecommendations) {
 	]).then((values) => {
 		const [listenedMap, allMusic] = values;
 		const newMusic = _.reject(allMusic, (music) => {
-			const recommendationOverlap = _.includes(recentRecommendations, music.id);
 			const alreadyListened = listenedMap[music.id];
-			return recommendationOverlap || alreadyListened;
+			const recommendationOverlap = _.includes(recentRecommendations, music.id);
+			return alreadyListened || recommendationOverlap;
 		});
 
 		const musicScores = newMusic.map((music) => {

@@ -4,12 +4,16 @@ const debug = require('debug')('recommend');
 const _ = require('lodash');
 
 const simpleTagRecommender = require('./recommender/simpleTagRecommender');
+const popularRecommender = require('./recommender/popularRecommender');
 
 const recommenderService = module.exports = {};
 
 const availableRecommenders = [
-	// TODO: additional recommenders
-	simpleTagRecommender
+	simpleTagRecommender,
+	popularRecommender
+	// lots more possible:
+	// followerRecommender: 'listened to by x'
+	// similarUserRecommender: 'people who liked x also liked y'
 ];
 
 recommenderService.recommend = function (user, options = {}) {
