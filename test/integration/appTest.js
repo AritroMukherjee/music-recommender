@@ -3,14 +3,14 @@
 const request = require('supertest');
 
 const app = require('../../server/app');
-const helper = require('./testHelper');
+const bootstrap = require('../../script/bootstrap');
 
 const user = 'a';
 
 describe('app', () => {
 	it('can bootstrap and recommend', () => {
 		// as specified in script.md
-		return helper.bootstrap(app).then(() => {
+		return bootstrap(app).then(() => {
 			return request(app)
 				.get(`/recommendations?user=${user}`)
 				.expect(200)

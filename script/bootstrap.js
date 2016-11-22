@@ -2,18 +2,10 @@
 
 const _ = require('lodash');
 const request = require('supertest');
-const debug = require('debug')('recommend:test');
+const debug = require('debug')('recommend:bootstrap');
 
-const listenJson = require('../../data/listen.json');
-const followJson = require('../../data/follows.json');
-
-exports.bootstrap = function (app) {
-	const listenPosts = loadMusicListens().map(listen => postJson(app, '/listen', listen));
-	const followPosts = loadFollows().map(follow => postJson(app, '/follow', follow));
-
-	return Promise.all([...listenPosts, ...followPosts]);
-};
-
+const listenJson = require('../data/listen.json');
+const followJson = require('../data/follows.json');
 
 function loadMusicListens() {
 	return _.flatten(_.map(listenJson.userIds, (musicList, userId) => {
@@ -32,3 +24,10 @@ function postJson(app, route, json) {
 		.send(json)
 		.expect(200);
 }
+
+module.exports = function bootstrap(app) {
+	const listenPosts = loadMusicListens().map(listen => postJson(app, '/listen', listen));
+	const followPosts = loadFollows().map(follow => postJson(app, '/follow', follow));
+
+	return Promise.all([...listenPosts, ...followPosts]);
+};

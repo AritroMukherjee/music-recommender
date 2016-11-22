@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const bootstrap = require('../script/bootstrap');
 
 const app = express();
 
@@ -16,6 +17,10 @@ app.listen(PORT, (err) => {
 	}
 
 	console.log(`server is running on port ${PORT}`);
+
+	if (process.env.BOOTSTRAP) {
+		bootstrap(app);
+	}
 });
 
 module.exports = app;

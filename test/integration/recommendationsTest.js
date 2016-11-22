@@ -4,7 +4,7 @@ const _ = require('lodash');
 const request = require('supertest');
 
 const app = require('../../server/app');
-const helper = require('./testHelper');
+const bootstrap = require('../../script/bootstrap');
 
 describe('/recommendations', () => {
 	it('returns recommendations even for new user', () => {
@@ -14,7 +14,7 @@ describe('/recommendations', () => {
 	});
 
 	describe('with data loaded', () => {
-		before(() => helper.bootstrap(app));
+		before(() => bootstrap(app));
 
 		it('returns recommendations for a user', () => {
 			return getRecommendation('a').expect((res) => {
@@ -32,8 +32,8 @@ describe('/recommendations', () => {
 		it('returns recommendations from multiple recommenders', () => {
 			return getRecommendation('a').expect((res) => {
 				const uniqueExplanations = _.uniq(_.map(res.body.list, 'explanation'));
-				return expect(uniqueExplanations).to.have.length.greaterThan(1);
-				return expect(uniqueExplanations).to.include('popular');
+				expect(uniqueExplanations).to.have.length.greaterThan(1);
+				expect(uniqueExplanations).to.include('popular');
 			});
 		});
 
