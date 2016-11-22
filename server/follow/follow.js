@@ -1,7 +1,7 @@
 'use strict';
 
 class Follow {
-	constructor (from, to) {
+	constructor(from, to) {
 		this.from = from;
 		this.to = to;
 		// datetime

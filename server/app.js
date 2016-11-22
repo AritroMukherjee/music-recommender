@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -8,12 +10,12 @@ app.use(require('./api'));
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, function (err) {
+app.listen(PORT, (err) => {
 	if (err) {
 		throw err;
 	}
 
-	console.log(`server is running on port ${PORT}`)
+	console.log(`server is running on port ${PORT}`);
 });
 
 module.exports = app;

@@ -1,10 +1,11 @@
+'use strict';
+
 const listenModel = require('../../server/listen/listenModel');
 
 const USER = 'a';
 const LISTENED_MUSIC = 'm2';
 
 describe('listenModel', () => {
-
 	afterEach(() => {
 		return listenModel.deleteAll();
 	});
@@ -48,5 +49,4 @@ describe('listenModel', () => {
 			});
 		});
 	});
-
 });

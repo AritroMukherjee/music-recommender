@@ -14,7 +14,8 @@
   "private": true,
   "scripts": {
     "start": "node index.js",
-    "test": "mocha --recursive",
+    "lint": "eslint .",
+    "test": "npm run lint && mocha --recursive",
     "test-unit": "mocha test/unit",
     "recommend": "mocha test/integration/app -g 'can bootstrap and recommend'"
   },
@@ -28,6 +29,9 @@
   "devDependencies": {
     "chai": "3.5.0",
     "chai-as-promised": "6.0.0",
+    "eslint": "3.10.2",
+    "eslint-config-airbnb-base": "10.0.1",
+    "eslint-plugin-import": "2.2.0",
     "mocha": "3.1.2",
     "sinon": "1.17.6",
     "supertest": "2.0.1"

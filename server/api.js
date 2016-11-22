@@ -1,16 +1,19 @@
+'use strict';
+
 const express = require('express');
+
 const router = express.Router();
 
 const listenModel = require('./listen/listenModel');
 const followModel = require('./follow/followModel');
 const recommenderService = require('./recommendation/recommenderService');
 
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
 	res.sendStatus(200);
 });
 
-router.post('/listen', function (req, res) {
-	const {userId, musicId} = req.body;
+router.post('/listen', (req, res) => {
+	const { userId, musicId } = req.body;
 	if (!userId) {
 		return handleMissingInput(res, 'Missing `userId` in body of request');
 	}
@@ -23,8 +26,8 @@ router.post('/listen', function (req, res) {
 		.catch(makeErrorHandler(res));
 });
 
-router.post('/follow', function (req, res) {
-	const {from, to} = req.body;
+router.post('/follow', (req, res) => {
+	const { from, to } = req.body;
 	if (!from) {
 		return handleMissingInput(res, 'Missing `from` in body of request');
 	}
@@ -37,7 +40,7 @@ router.post('/follow', function (req, res) {
 		.catch(makeErrorHandler(res));
 });
 
-router.get('/recommendations', function (req, res) {
+router.get('/recommendations', (req, res) => {
 	const user = req.query.user;
 	if (!user) {
 		return handleMissingInput(res, 'Missing `user` query parameter');
@@ -57,7 +60,7 @@ function makeErrorHandler(res) {
 		console.error(error.stack);
 		// TODO: vary status based on kind of error
 		res.sendStatus(500);
-	}
+	};
 }
 
 module.exports = router;

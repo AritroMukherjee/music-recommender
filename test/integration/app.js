@@ -1,3 +1,5 @@
+'use strict';
+
 const _ = require('lodash');
 const request = require('supertest');
 const debug = require('debug')('recommend:test');
@@ -16,34 +18,29 @@ function postJson(route, json) {
 
 function getRecommendation(userId) {
 	return request(app)
-		.get('/recommendations?user=' + userId)
+		.get(`/recommendations?user=${userId}`)
 		.expect(200);
 }
 
 describe('app', () => {
-
 	function loadMusicListens() {
 		return _.flatten(_.map(listenJson.userIds, (musicList, userId) => {
-			return _.map(musicList, music => {
-				return {userId: userId, musicId: music};
-			});
+			return _.map(musicList, musicId => ({ userId, musicId }));
 		}));
 	}
 
 	function loadFollows() {
-		return followJson.operations.map(value => {
-			return { from: value[0], to: value[1] };
-		});
+		return followJson.operations.map(value => ({ from: value[0], to: value[1] }));
 	}
 
 	// as specified in script.md
 	it('can bootstrap and recommend', () => {
-		var listenPosts = loadMusicListens().map(listen => postJson('/listen', listen));
-		var followPosts = loadFollows().map(follow => postJson('/follow', follow));
+		const listenPosts = loadMusicListens().map(listen => postJson('/listen', listen));
+		const followPosts = loadFollows().map(follow => postJson('/follow', follow));
 
 		return Promise.all([...listenPosts, ...followPosts]).then(() => {
 			const user = 'a';
-			return getRecommendation(user).expect(res => {
+			return getRecommendation(user).expect((res) => {
 				console.log(`recommendations for user ${user}: ${JSON.stringify(res.body, null, 2)}`);
 				return expect(res.body.list).to.have.length(5);
 			});
@@ -51,11 +48,10 @@ describe('app', () => {
 	});
 
 	describe('/listen', () => {
-
 		it('POST succeeds', () => {
 			return request(app)
 				.post('/listen')
-				.send({userId: 'a', musicId: 'm2'})
+				.send({ userId: 'a', musicId: 'm2' })
 				.expect(200);
 		});
 
@@ -68,18 +64,16 @@ describe('app', () => {
 		it('handles no `user` parameter', () => {
 			return request(app)
 				.post('/listen')
-				.send({musicId: 'm2'})
+				.send({ musicId: 'm2' })
 				.expect(400);
 		});
-
 	});
 
 	describe('/follow', () => {
-
 		it('POST succeeds', () => {
 			return request(app)
 				.post('/follow')
-				.send({from: 'a', to: 'b'})
+				.send({ from: 'a', to: 'b' })
 				.expect(200);
 		});
 
@@ -92,23 +86,21 @@ describe('app', () => {
 		it('handles no `to` parameter', () => {
 			return request(app)
 				.post('/follow')
-				.send({from: 'a'})
+				.send({ from: 'a' })
 				.expect(400);
 		});
-
 	});
 
 	describe('/recommendations', () => {
-
 		it('returns recommendations for a user', () => {
-			return getRecommendation('a').expect(res => {
+			return getRecommendation('a').expect((res) => {
 				return expect(res.body.list).to.have.length(5);
 			});
 		});
 
 		it('returns different recommendations each time', () => {
-			return getRecommendation('a').expect(res => {
-				var uniqueMusicIds = _.uniq(_.map(res.body.list, 'music'));
+			return getRecommendation('a').expect((res) => {
+				const uniqueMusicIds = _.uniq(_.map(res.body.list, 'music'));
 				return expect(uniqueMusicIds).to.have.length(5);
 			});
 		});
@@ -116,7 +108,7 @@ describe('app', () => {
 		it('handles unknown user', () => {
 			return request(app)
 				.get('/recommendations?user=foo')
-				.expect(500); // TODO: should properly be a 404, but we don't have users defined
+				.expect(500); // TODO: should properly be a 404
 		});
 
 		it('handles no user parameter', () => {
@@ -124,7 +116,5 @@ describe('app', () => {
 				.get('/recommendations')
 				.expect(400);
 		});
-
 	});
-
 });

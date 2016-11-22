@@ -1,10 +1,9 @@
+'use strict';
+
 const followModel = require('../../server/follow/followModel');
 
 describe('followModel', () => {
-
-	beforeEach(() => {
-		return followModel.deleteAll();
-	});
+	beforeEach(() => followModel.deleteAll());
 
 	describe('add', () => {
 		it('another user', () => {
@@ -29,8 +28,7 @@ describe('followModel', () => {
 				followModel.add('a', 'b')
 			]).then(() => {
 				return expect(followModel.getFollowees('a')).to.eventually.have.length(1);
-			})
+			});
 		});
 	});
-
 });

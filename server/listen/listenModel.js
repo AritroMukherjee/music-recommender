@@ -1,3 +1,5 @@
+'use strict';
+
 const listenModel = module.exports = {};
 
 const listenerToMusic = new Map(); // specified as array, but we may want a Set
@@ -5,12 +7,12 @@ const musicToListeners = new Map(); // Set probably
 
 listenModel.add = function (userId, musicId) {
 	if (!userId) {
-		return Promise.reject(new Error(`no user specified for listen`));
+		return Promise.reject(new Error('no user specified for listen'));
 	}
 	// NOTE-DZH: would normally validate user exists here
-	
+
 	if (!musicId) {
-		return Promise.reject(new Error(`no music specified for listen`));
+		return Promise.reject(new Error('no music specified for listen'));
 	}
 
 	initMapEntry(listenerToMusic, userId);

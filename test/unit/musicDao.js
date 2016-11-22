@@ -1,7 +1,8 @@
+'use strict';
+
 const musicModel = require('../../server/music/musicModel');
 
 describe('musicModel', () => {
-
 	it('initializes with music', () => {
 		return expect(musicModel.getMusicCount()).to.eventually.be.greaterThan(0);
 	});
@@ -21,5 +22,4 @@ describe('musicModel', () => {
 			return expect(musicModel.getTagsForMusic('foo')).to.be.rejected;
 		});
 	});
-
 });
