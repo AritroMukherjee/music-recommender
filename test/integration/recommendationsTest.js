@@ -13,6 +13,15 @@ describe('/recommendations', () => {
 		});
 	});
 
+	it('returns specified number of recommendations', () => {
+		return request(app)
+			.get('/recommendations?user=a&count=3')
+			.expect(200)
+			.expect((res) => {
+				return expect(res.body.list).to.have.length(3);
+			});
+	});
+
 	describe('with data loaded', () => {
 		before(() => bootstrap(app));
 

@@ -45,8 +45,11 @@ router.get('/recommendations', (req, res) => {
 	if (!user) {
 		return handleMissingInput(res, 'Missing `user` query parameter');
 	}
+	const options = {
+		count: req.query.count
+	};
 
-	recommenderService.recommend(user)
+	recommenderService.recommend(user, options)
 		.then(recommendations => res.json(recommendations))
 		.catch(makeErrorHandler(res));
 });
