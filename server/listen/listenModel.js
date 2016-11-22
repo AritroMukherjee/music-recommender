@@ -35,8 +35,13 @@ listenModel.getAll = function () {
 	return Promise.resolve(listens);
 };
 
+listenModel.getCount = function () {
+	return Promise.resolve(listens.length);
+};
+
 listenModel.deleteAll = function () {
 	listenerToMusic.clear();
+	listens.length = 0;
 	return Promise.resolve();
 };
 

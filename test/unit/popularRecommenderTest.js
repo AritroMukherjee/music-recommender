@@ -25,6 +25,10 @@ describe('popularRecommender', () => {
 	});
 
 	it('includes an explanation', () => {
+		sandbox.stub(listenModel, 'getAll', () => Promise.resolve([
+			{ music: 'm1' }
+		]));
+
 		return recommender.recommend('a').then((result) => {
 			return expect(result.explanation).to.equal('popular');
 		});
@@ -41,6 +45,16 @@ describe('popularRecommender', () => {
 		return recommender.recommend('e').then((result) => {
 			expect(result.music).to.not.equal('m4'); // would be selected, except already listened
 			expect(result.music).to.equal('m1');
+		});
+	});
+
+	it('returns null if no recommendation possible', () => {
+		sandbox.stub(listenModel, 'getAll', () => Promise.resolve([
+			{ user: 'a', music: 'm1' }
+		]));
+
+		return recommender.recommend('a', ['m1']).then((result) => {
+			expect(result).to.equal(null);
 		});
 	});
 });

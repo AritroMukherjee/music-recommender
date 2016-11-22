@@ -10,7 +10,7 @@ const explanation = require('../explanation');
 const recommender = module.exports = {};
 
 recommender.checkSupported = function (user) {
-	// requires at least one music listen
+	// requires at least one music listen by user
 	return listenModel.getMusicByListener(user).then(musicList => musicList.length);
 };
 

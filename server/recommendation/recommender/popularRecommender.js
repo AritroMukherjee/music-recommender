@@ -9,8 +9,8 @@ const explanation = require('../explanation');
 const recommender = module.exports = {};
 
 recommender.checkSupported = function () {
-	// no prerequisites; good for new users
-	return true;
+	// only requires that listen data (for any user) is available
+	return listenModel.getCount().then(count => count > 0);
 };
 
 recommender.recommend = function (user, recentRecommendations) {
@@ -32,6 +32,9 @@ recommender.recommend = function (user, recentRecommendations) {
 			}
 		});
 		debug('popularity map', popularityMap);
+		if (!max.music) {
+			return null;
+		}
 
 		debug('popularRecommender recommended', max.music);
 		return {

@@ -7,19 +7,18 @@ const app = require('../../server/app');
 const bootstrap = require('../../script/bootstrap');
 
 describe('/recommendations', () => {
-	it('returns recommendations even for new user', () => {
-		return getRecommendation('a').expect((res) => {
-			return expect(res.body.list).to.have.length(5);
+	describe('before data loaded', () => {
+		before(() => {
+			return request(app)
+				.delete('/listen')
+				.expect(200);
 		});
-	});
 
-	it('returns specified number of recommendations', () => {
-		return request(app)
-			.get('/recommendations?user=a&count=3')
-			.expect(200)
-			.expect((res) => {
-				return expect(res.body.list).to.have.length(3);
-			});
+		it('fails to recommend without any listens loaded', () => {
+			return request(app)
+				.get('/recommendations?user=a')
+				.expect(500);
+		});
 	});
 
 	describe('with data loaded', () => {
@@ -29,6 +28,21 @@ describe('/recommendations', () => {
 			return getRecommendation('a').expect((res) => {
 				return expect(res.body.list).to.have.length(5);
 			});
+		});
+
+		it('returns recommendations even for new user without any listens', () => {
+			return getRecommendation('z').expect((res) => {
+				return expect(res.body.list).to.have.length(5);
+			});
+		});
+
+		it('returns specified number of recommendations', () => {
+			return request(app)
+				.get('/recommendations?user=a&count=3')
+				.expect(200)
+				.expect((res) => {
+					return expect(res.body.list).to.have.length(3);
+				});
 		});
 
 		it('returns unique recommendations each time', () => {

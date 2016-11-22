@@ -26,6 +26,12 @@ router.post('/listen', (req, res) => {
 		.catch(makeErrorHandler(res));
 });
 
+router.delete('/listen', (req, res) => {
+	listenModel.deleteAll()
+		.then(() => res.sendStatus(200))
+		.catch(makeErrorHandler(res));
+});
+
 router.post('/follow', (req, res) => {
 	const { from, to } = req.body;
 	if (!from) {
@@ -36,6 +42,12 @@ router.post('/follow', (req, res) => {
 	}
 
 	followModel.add(from, to)
+		.then(() => res.sendStatus(200))
+		.catch(makeErrorHandler(res));
+});
+
+router.delete('/follow', (req, res) => {
+	followModel.deleteAll()
 		.then(() => res.sendStatus(200))
 		.catch(makeErrorHandler(res));
 });
