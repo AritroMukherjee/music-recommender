@@ -17,7 +17,7 @@
     "lint": "eslint .",
     "test": "npm run lint && mocha --recursive",
     "test-unit": "mocha test/unit",
-    "recommend": "mocha test/integration/app -g 'can bootstrap and recommend'"
+    "recommend": "mocha test/integration/appTest"
   },
   "author": "David Hirtle <david.hirtle@gmail.com>",
   "dependencies": {
