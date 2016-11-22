@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 const musicModel = module.exports = {};
 
-const music = require('../../music.json');
+const music = require('../../data/music.json');
 
 // TODO: introduce Music class to avoid passing around literals
 // music will still a map with id as the key

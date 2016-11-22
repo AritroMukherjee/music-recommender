@@ -5,8 +5,8 @@ const request = require('supertest');
 const debug = require('debug')('recommend:test');
 
 const app = require('../../server/app');
-const listenJson = require('../../listen.json');
-const followJson = require('../../follows.json');
+const listenJson = require('../../data/listen.json');
+const followJson = require('../../data/follows.json');
 
 function postJson(route, json) {
 	debug(`POST ${route}: ${JSON.stringify(json)}`);
