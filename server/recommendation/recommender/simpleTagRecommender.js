@@ -5,6 +5,7 @@ const debug = require('debug')('recommend:simple');
 
 const listenModel = require('../../listen/listenModel');
 const musicModel = require('../../music/musicModel');
+const explanation = require('../explanation');
 
 const recommender = module.exports = {};
 
@@ -27,7 +28,7 @@ recommender.recommend = function (user, recentRecommendations) {
 			const commonTags = _.intersection(recommended.tags, _.keys(tagFrequency));
 			return {
 				music: recommended.music,
-				explanation: `Because you listen to ${_.first(commonTags)}`
+				explanation: explanation.tag(_.first(commonTags))
 			};
 		});
 	});

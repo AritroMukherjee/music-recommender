@@ -14,12 +14,20 @@ describe('simpleTagRecommender', () => {
 
 	afterEach(() => sandbox.restore());
 
-	it('recommends music', () => {
+	it('recommends music based on tags', () => {
 		sandbox.stub(listenModel, 'getMusicByListener', () => Promise.resolve(['m2']));
 		// m2 has ["samba", "60s"]
 
 		return recommender.recommend('a').then((result) => {
 			return expect(result.music).to.equal('m11'); // m11 also has samba
+		});
+	});
+
+	it('includes an explanation', () => {
+		sandbox.stub(listenModel, 'getMusicByListener', () => Promise.resolve(['m2']));
+
+		return recommender.recommend('a').then((result) => {
+			return expect(result.explanation).to.equal('tag-samba');
 		});
 	});
 
