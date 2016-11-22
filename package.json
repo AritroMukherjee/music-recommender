@@ -17,6 +17,7 @@
     "lint": "eslint .",
     "test": "npm run lint && mocha --recursive",
     "test-unit": "mocha test/unit",
+    "test-int": "mocha test/integration",
     "recommend": "mocha test/integration/appTest"
   },
   "author": "David Hirtle <david.hirtle@gmail.com>",

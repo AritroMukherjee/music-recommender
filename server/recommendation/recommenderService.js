@@ -19,14 +19,24 @@ const availableRecommenders = [
 recommenderService.recommend = function (user, options = {}) {
 	const recommendationCount = options.count || 5;
 
-	const supportedRecommenders = availableRecommenders.filter(recommender => recommender.checkSupported(user));
-	if (!supportedRecommenders.length) {
-		return Promise.reject(new Error(`no valid recommenders for user ${user}`));
-	}
+	return getSupportedRecommenders(user).then((supportedRecommenders) => {
+		if (!supportedRecommenders.length) {
+			return Promise.reject(new Error(`no valid recommenders for user ${user}`));
+		}
 
-	return recommendNext(0, recommendationCount, user, supportedRecommenders)
-		.then(recommendations => ({ list: recommendations }));
+		return recommendNext(0, recommendationCount, user, supportedRecommenders)
+			.then(recommendations => ({ list: recommendations }));
+	});
 };
+
+function getSupportedRecommenders(user) {
+	const checkPromises = availableRecommenders.map(recommender => recommender.checkSupported(user));
+	return Promise.all(checkPromises).then((checkResults) => {
+		return availableRecommenders.filter((recommender, index) => {
+			return checkResults[index]; // true if supported
+		});
+	});
+}
 
 function recommendNext(counter, total, user, recommenders, recommendations = []) {
 	if (counter > 5 * total) {
