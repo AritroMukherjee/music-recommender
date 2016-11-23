@@ -14,17 +14,10 @@ recommender.checkSupported = function (user) {
 	return followModel.getFollowees(user).then(follows => follows.length > 0);
 };
 
-function findMusicForFollows(follows) {
-	const users = _.map(follows, 'to');
-	return listenModel.getMusicByListeners(users).then((music) => {
-		return _.uniq(music);
-	});
-}
-
 recommender.recommend = function (user, recentRecommendations) {
 	return Promise.all([
 		listenModel.getMusicByListener(user).then(musicList => _.countBy(musicList)),
-		followModel.getFollowees(user)
+		followModel.getFollowees(user) // could descend further if need be
 	]).then(([listenedMap, follows]) => {
 		return findMusicForFollows(follows).then((followedMusicWithUser) => {
 			debug('followed music', followedMusicWithUser);
@@ -38,9 +31,8 @@ recommender.recommend = function (user, recentRecommendations) {
 				return null;
 			}
 
-			const recommended = _.first(newFollowedMusic);
+			const recommended = _.first(newFollowedMusic); // better would be choosing song most listened among followers
 			debug('followRecommender recommended', recommended);
-			// TODO: figure out which user listened
 			return {
 				music: recommended.music,
 				explanation: explanation.follow(recommended.user)
@@ -48,3 +40,10 @@ recommender.recommend = function (user, recentRecommendations) {
 		});
 	});
 };
+
+function findMusicForFollows(follows) {
+	const users = _.map(follows, 'to');
+	return listenModel.getMusicByListeners(users).then((music) => {
+		return _.uniq(music);
+	});
+}
