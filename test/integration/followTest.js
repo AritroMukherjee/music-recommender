@@ -9,7 +9,7 @@ describe('/follow', () => {
 		return request(app)
 			.post('/follow')
 			.send({ from: 'a', to: 'b' })
-			.expect(200);
+			.expect(201);
 	});
 
 	it('handles no parameters', () => {

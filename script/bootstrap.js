@@ -22,7 +22,7 @@ function postJson(app, route, json) {
 	return request(app)
 		.post(route)
 		.send(json)
-		.expect(200);
+		.expect(201);
 }
 
 module.exports = function bootstrap(app) {

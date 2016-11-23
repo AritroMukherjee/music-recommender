@@ -9,7 +9,7 @@ describe('/listen', () => {
 		return request(app)
 			.post('/listen')
 			.send({ userId: 'a', musicId: 'm2' })
-			.expect(200);
+			.expect(201);
 	});
 
 	it('handles no parameters', () => {

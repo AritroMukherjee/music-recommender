@@ -22,13 +22,13 @@ router.post('/listen', (req, res, next) => {
 	}
 
 	listenModel.add(userId, musicId)
-		.then(() => res.sendStatus(200))
+		.then(() => res.sendStatus(201))
 		.catch(makeErrorHandler(next));
 });
 
 router.delete('/listen', (req, res, next) => {
 	listenModel.deleteAll()
-		.then(() => res.sendStatus(200))
+		.then(() => res.sendStatus(204))
 		.catch(makeErrorHandler(next));
 });
 
@@ -42,13 +42,13 @@ router.post('/follow', (req, res, next) => {
 	}
 
 	followModel.add(from, to)
-		.then(() => res.sendStatus(200))
+		.then(() => res.sendStatus(201))
 		.catch(makeErrorHandler(next));
 });
 
 router.delete('/follow', (req, res, next) => {
 	followModel.deleteAll()
-		.then(() => res.sendStatus(200))
+		.then(() => res.sendStatus(204))
 		.catch(makeErrorHandler(next));
 });
 
