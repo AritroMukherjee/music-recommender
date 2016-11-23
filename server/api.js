@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 	res.sendStatus(200);
 });
 
-router.post('/listen', (req, res) => {
+router.post('/listen', (req, res, next) => {
 	const { userId, musicId } = req.body;
 	if (!userId) {
 		return handleMissingInput(res, 'Missing `userId` in body of request');
@@ -23,16 +23,16 @@ router.post('/listen', (req, res) => {
 
 	listenModel.add(userId, musicId)
 		.then(() => res.sendStatus(200))
-		.catch(makeErrorHandler(res));
+		.catch(makeErrorHandler(next));
 });
 
-router.delete('/listen', (req, res) => {
+router.delete('/listen', (req, res, next) => {
 	listenModel.deleteAll()
 		.then(() => res.sendStatus(200))
-		.catch(makeErrorHandler(res));
+		.catch(makeErrorHandler(next));
 });
 
-router.post('/follow', (req, res) => {
+router.post('/follow', (req, res, next) => {
 	const { from, to } = req.body;
 	if (!from) {
 		return handleMissingInput(res, 'Missing `from` in body of request');
@@ -43,16 +43,16 @@ router.post('/follow', (req, res) => {
 
 	followModel.add(from, to)
 		.then(() => res.sendStatus(200))
-		.catch(makeErrorHandler(res));
+		.catch(makeErrorHandler(next));
 });
 
-router.delete('/follow', (req, res) => {
+router.delete('/follow', (req, res, next) => {
 	followModel.deleteAll()
 		.then(() => res.sendStatus(200))
-		.catch(makeErrorHandler(res));
+		.catch(makeErrorHandler(next));
 });
 
-router.get('/recommendations', (req, res) => {
+router.get('/recommendations', (req, res, next) => {
 	const user = req.query.user;
 	if (!user) {
 		return handleMissingInput(res, 'Missing `user` query parameter');
@@ -63,18 +63,17 @@ router.get('/recommendations', (req, res) => {
 
 	recommenderService.recommend(user, options)
 		.then(recommendations => res.json(recommendations))
-		.catch(makeErrorHandler(res));
+		.catch(makeErrorHandler(next));
 });
 
 function handleMissingInput(res, message) {
 	res.status(400).send(message);
 }
 
-function makeErrorHandler(res) {
+function makeErrorHandler(next) {
 	return function (error) {
 		console.error(error.stack);
-		// TODO: vary status based on kind of error
-		res.sendStatus(500);
+		return next(error); // the express default error handler suffices for now
 	};
 }
 

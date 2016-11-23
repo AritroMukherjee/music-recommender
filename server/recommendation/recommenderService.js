@@ -21,7 +21,7 @@ recommenderService.recommend = function (user, options = {}) {
 
 	return getSupportedRecommenders(user).then((supportedRecommenders) => {
 		if (!supportedRecommenders.length) {
-			return Promise.reject(new Error(`no valid recommenders for user ${user}`));
+			return Promise.reject(new Error(`No valid recommenders for user ${user}. Has data been loaded?`));
 		}
 
 		return recommendNext(0, recommendationCount, user, supportedRecommenders)
@@ -41,7 +41,7 @@ function getSupportedRecommenders(user) {
 function recommendNext(counter, total, user, recommenders, recommendations = []) {
 	if (counter > 5 * total) {
 		// sanity check
-		return Promise.reject(new Error(`too many attempts to recommend for user ${user}: ${counter}`));
+		return Promise.reject(new Error(`Too many attempts to recommend for user ${user}: ${counter}`));
 	}
 
 	const nextRecommender = recommenders[counter % recommenders.length];
