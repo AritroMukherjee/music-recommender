@@ -27,6 +27,8 @@ recommender.recommend = function (user, recentRecommendations) {
 			popularityMap[listen.music] = 1 + (popularityMap[listen.music] || 0);
 
 			if (popularityMap[listen.music] > max.count) {
+				// better would be to break ties with some randomness
+				// so users will get novel recommendations
 				max.count = popularityMap[listen.music];
 				max.music = listen.music;
 			}
