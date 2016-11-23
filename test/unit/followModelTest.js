@@ -30,5 +30,9 @@ describe('followModel', () => {
 				return expect(followModel.getFollowees('a')).to.eventually.have.length(1);
 			});
 		});
+
+		it('handles unknown user', () => {
+			return expect(followModel.getFollowees('z')).to.eventually.have.length(0);
+		});
 	});
 });

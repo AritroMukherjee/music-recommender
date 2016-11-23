@@ -37,7 +37,7 @@ followModel.getFollowees = function (followerId) {
 		return Promise.reject(new Error('no follower specified'));
 	}
 
-	const followeeSet = followsMap.get(followerId);
+	const followeeSet = followsMap.get(followerId) || [];
 	return Promise.resolve(Array.from(followeeSet));
 };
 

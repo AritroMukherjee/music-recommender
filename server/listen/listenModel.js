@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const Listen = require('./listen');
 
 const listenModel = module.exports = {};
@@ -29,6 +30,14 @@ listenModel.add = function (userId, musicId) {
 
 listenModel.getMusicByListener = function (userId) {
 	return Promise.resolve(listenerToMusic.get(userId) || []);
+};
+
+listenModel.getMusicByListeners = function (userIds) {
+	const results = userIds.map((userId) => {
+		const musicIds = listenerToMusic.get(userId) || [];
+		return musicIds.map(musicId => ({ user: userId, music: musicId }));
+	});
+	return Promise.resolve(_.flatten(results));
 };
 
 listenModel.getAll = function () {
