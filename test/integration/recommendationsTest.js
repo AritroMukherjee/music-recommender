@@ -7,64 +7,60 @@ const app = require('../../server/app');
 const bootstrap = require('../../script/bootstrap');
 
 describe('/recommendations', () => {
-	describe('before data loaded', () => {
-		before(() => {
-			return request(app)
-				.delete('/listen')
-				.expect(200);
-		});
+	before(() => bootstrap(app));
 
-		it('fails to recommend without any listens loaded', () => {
-			return request(app)
-				.get('/recommendations?user=a')
-				.expect(500);
+	it('returns recommendations for a user', () => {
+		return getRecommendation('a').expect((res) => {
+			return expect(res.body.list).to.have.length(5);
 		});
 	});
 
-	describe('with data loaded', () => {
-		before(() => bootstrap(app));
+	it('returns recommendations even for new user without any listens', () => {
+		return getRecommendation('z').expect((res) => {
+			return expect(res.body.list).to.have.length(5);
+		});
+	});
 
-		it('returns recommendations for a user', () => {
-			return getRecommendation('a').expect((res) => {
-				return expect(res.body.list).to.have.length(5);
+	it('returns specified number of recommendations', () => {
+		return request(app)
+			.get('/recommendations?user=a&count=3')
+			.expect(200)
+			.expect((res) => {
+				return expect(res.body.list).to.have.length(3);
 			});
-		});
+	});
 
-		it('returns recommendations even for new user without any listens', () => {
-			return getRecommendation('z').expect((res) => {
-				return expect(res.body.list).to.have.length(5);
+	it('returns unique recommendations each time', () => {
+		return getRecommendation('a').expect((res) => {
+			const uniqueMusicIds = _.uniq(_.map(res.body.list, 'music'));
+			return expect(uniqueMusicIds).to.have.length(5);
+		});
+	});
+
+	it('returns recommendations from multiple recommenders', () => {
+		return getRecommendation('a').expect((res) => {
+			const uniqueExplanations = _.uniq(_.map(res.body.list, 'explanation'));
+			expect(uniqueExplanations).to.have.length.greaterThan(1);
+			expect(uniqueExplanations).to.include('popular');
+		});
+	});
+
+	it('handles no user parameter', () => {
+		return request(app)
+			.get('/recommendations')
+			.expect(400);
+	});
+
+	// NOTE: order matters here
+	it('fails to recommend without any listens loaded', () => {
+		return request(app)
+			.delete('/listen')
+			.expect(200)
+			.end(() => {
+				return request(app)
+					.get('/recommendations?user=a')
+					.expect(500);
 			});
-		});
-
-		it('returns specified number of recommendations', () => {
-			return request(app)
-				.get('/recommendations?user=a&count=3')
-				.expect(200)
-				.expect((res) => {
-					return expect(res.body.list).to.have.length(3);
-				});
-		});
-
-		it('returns unique recommendations each time', () => {
-			return getRecommendation('a').expect((res) => {
-				const uniqueMusicIds = _.uniq(_.map(res.body.list, 'music'));
-				return expect(uniqueMusicIds).to.have.length(5);
-			});
-		});
-
-		it('returns recommendations from multiple recommenders', () => {
-			return getRecommendation('a').expect((res) => {
-				const uniqueExplanations = _.uniq(_.map(res.body.list, 'explanation'));
-				expect(uniqueExplanations).to.have.length.greaterThan(1);
-				expect(uniqueExplanations).to.include('popular');
-			});
-		});
-
-		it('handles no user parameter', () => {
-			return request(app)
-				.get('/recommendations')
-				.expect(400);
-		});
 	});
 });
 

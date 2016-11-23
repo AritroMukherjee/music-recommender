@@ -53,8 +53,6 @@ describe('popularRecommender', () => {
 			{ user: 'a', music: 'm1' }
 		]));
 
-		return recommender.recommend('a', ['m1']).then((result) => {
-			expect(result).to.equal(null);
-		});
+		return expect(recommender.recommend('a', ['m1'])).to.eventually.equal(null);
 	});
 });

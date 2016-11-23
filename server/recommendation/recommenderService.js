@@ -46,8 +46,10 @@ function recommendNext(counter, total, user, recommenders, recommendations = [])
 
 	const nextRecommender = recommenders[counter % recommenders.length];
 	return nextRecommender.recommend(user, _.map(recommendations, 'music')).then((recommendation) => {
-		recommendations.push(recommendation);
-		debug('recommended so far', recommendations.length);
+		if (recommendation) {
+			recommendations.push(recommendation);
+			debug('added recommendation %d', recommendations.length);
+		}
 		return recommendations.length < total ?
 			recommendNext(counter + 1, total, user, recommenders, recommendations) :
 			recommendations;

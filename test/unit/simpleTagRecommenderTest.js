@@ -34,7 +34,13 @@ describe('simpleTagRecommender', () => {
 	it('rejects if no listened music', () => {
 		sandbox.stub(listenModel, 'getMusicByListener', () => Promise.resolve([]));
 
-		return expect(recommender.recommend('a')).to.be.rejected;
+		return expect(recommender.recommend('a')).to.be.rejectedWith(/cannot recommend without any listens/);
+	});
+
+	it('returns null if no recommendation possible', () => {
+		sandbox.stub(listenModel, 'getMusicByListener', () => Promise.resolve(['m11']));
+
+		return expect(recommender.recommend('e', ['m2'])).to.eventually.equal(null);
 	});
 
 	it('will not recommend music already heard', () => {
