@@ -11,11 +11,7 @@ app.use(require('./api'));
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, (err) => {
-	if (err) {
-		throw err;
-	}
-
+app.listen(PORT, () => {
 	console.log(`server is running on port ${PORT}`);
 
 	if (process.env.BOOTSTRAP) {

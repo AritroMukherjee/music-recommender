@@ -53,7 +53,7 @@ describe('/recommendations', () => {
 
 	// NOTE: order matters here
 	it('fails to recommend without any listens loaded', () => {
-		return request(app)
+		request(app)
 			.delete('/listen')
 			.expect(200)
 			.end(() => {

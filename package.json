@@ -1,7 +1,8 @@
 {
   "name": "music-recommender",
-  "version": "0.1.0",
-  "description": "music recommendation system for a fictional social music service",
+  "version": "0.2.0",
+  "description": "a music recommendation engine prioritizing explainability and diversity",
+  "author": "David Hirtle <david.hirtle@gmail.com>",
   "main": "index.js",
   "license": "MIT",
   "repository": {
@@ -14,14 +15,13 @@
   "private": true,
   "scripts": {
     "start": "node index.js",
-    "start-bootstrap": "BOOTSTRAP=true node index.js",
+    "start-bootstrap": "BOOTSTRAP=true npm start",
     "lint": "eslint .",
     "test": "npm run lint && mocha --recursive",
     "test-unit": "mocha test/unit",
     "test-int": "mocha test/integration",
     "recommend": "mocha test/integration/appTest"
   },
-  "author": "David Hirtle <david.hirtle@gmail.com>",
   "dependencies": {
     "body-parser": "1.15.2",
     "debug": "2.3.3",
