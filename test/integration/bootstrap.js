@@ -4,8 +4,8 @@ const _ = require('lodash');
 const request = require('supertest');
 const debug = require('debug')('recommend:bootstrap');
 
-const listenJson = require('../data/listen.json');
-const followJson = require('../data/follows.json');
+const listenJson = require('../../data/listen.json');
+const followJson = require('../../data/follows.json');
 
 function loadMusicListens() {
 	return _.flatten(_.map(listenJson.userIds, (musicList, userId) => {

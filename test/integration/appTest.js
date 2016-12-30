@@ -3,7 +3,7 @@
 const request = require('supertest');
 
 const app = require('../../server/app');
-const bootstrap = require('../../script/bootstrap');
+const bootstrap = require('./bootstrap');
 
 const user = 'a';
 

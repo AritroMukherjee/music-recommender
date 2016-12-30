@@ -4,7 +4,7 @@ const _ = require('lodash');
 const request = require('supertest');
 
 const app = require('../../server/app');
-const bootstrap = require('../../script/bootstrap');
+const bootstrap = require('./bootstrap');
 
 describe('/recommendations', () => {
 	before(() => bootstrap(app));

@@ -51,3 +51,12 @@ function initMapEntry(map, key) {
 		map.set(key, new Set());
 	}
 }
+
+function init() {
+	const followJson = require('../../data/follows.json'); // eslint-disable-line global-require
+	return Promise.all(followJson.operations.map(value => followModel.add(value[0], value[1])));
+}
+
+if (process.env.BOOTSTRAP) {
+	init();
+}

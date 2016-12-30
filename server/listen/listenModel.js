@@ -3,11 +3,10 @@
 const _ = require('lodash');
 const Listen = require('./listen');
 
-const listenModel = module.exports = {};
-
 const listenerToMusic = new Map(); // specified as array, but we may want a Set
-
 const listens = [];
+
+const listenModel = module.exports = {};
 
 listenModel.add = function (userId, musicId) {
 	if (!userId) {
@@ -26,6 +25,10 @@ listenModel.add = function (userId, musicId) {
 	listenerToMusic.get(userId).push(musicId);
 
 	return Promise.resolve(listen);
+};
+
+listenModel.addAll = function (userId, musicList) {
+	return Promise.all(musicList.map(musicId => listenModel.add(userId, musicId)));
 };
 
 listenModel.getMusicByListener = function (userId) {
@@ -58,4 +61,15 @@ function initMapEntry(map, key) {
 	if (!map.has(key)) {
 		map.set(key, []);
 	}
+}
+
+function init() {
+	const listenJson = require('../../data/listen.json'); // eslint-disable-line global-require
+	return Promise.all(_.map(listenJson.userIds, (musicList, userId) => {
+		return listenModel.addAll(userId, musicList);
+	}));
+}
+
+if (process.env.BOOTSTRAP) {
+	init();
 }

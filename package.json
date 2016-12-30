@@ -14,13 +14,11 @@
   },
   "private": true,
   "scripts": {
-    "start": "node index.js",
-    "start-bootstrap": "BOOTSTRAP=true npm start",
-    "lint": "eslint .",
+    "start": "BOOTSTRAP=true node index.js",
     "test": "npm run lint && mocha --recursive",
+    "lint": "eslint .",
     "test-unit": "mocha test/unit",
-    "test-int": "mocha test/integration",
-    "recommend": "mocha test/integration/appTest"
+    "test-int": "mocha test/integration"
   },
   "dependencies": {
     "body-parser": "1.15.2",

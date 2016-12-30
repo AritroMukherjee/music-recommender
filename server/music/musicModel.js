@@ -5,16 +5,11 @@ const Music = require('./music');
 
 const musicMap = new Map();
 
-function init() {
-	const musicJson = require('../../data/music.json'); // eslint-disable-line global-require
-	_.each(musicJson, (tags, musicId) =>
-		musicMap.set(musicId, new Music(musicId, tags))
-	);
-}
-
-init();
-
 const musicModel = module.exports = {};
+
+musicModel.add = function (musicId, tags) {
+	return Promise.resolve(musicMap.set(musicId, new Music(musicId, tags)));
+};
 
 musicModel.getMusicCount = function () {
 	return Promise.resolve(musicMap.size);
@@ -31,3 +26,10 @@ musicModel.getTagsForMusic = function (musicId) {
 
 	return Promise.resolve(musicMap.get(musicId).tags || []);
 };
+
+function init() {
+	const musicJson = require('../../data/music.json'); // eslint-disable-line global-require
+	return Promise.all(_.map(musicJson, (tags, musicId) => musicModel.add(musicId, tags)));
+}
+
+init(); // not dependent on BOOTSTRAP because music is not based on user activity
