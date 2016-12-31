@@ -1,0 +1,6 @@
+<h1 class="rec-list-header">We found <span class="rec-list-count">{{$ctrl.recommendations.length}}</span> songs for you</h1>
+<div class="rec-list" ng-repeat="recommendation in $ctrl.recommendations track by recommendation.music">
+	<div class="rec">
+		{{ recommendation.music }}
+	</div>
+</div>
