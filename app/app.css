@@ -1,0 +1,69 @@
+html {
+	font-size: 10px;
+	font-family: sans-serif;
+	line-height: 1.15;
+}
+body {
+	font-size: 1.6rem;
+	font-family: sans-serif;
+}
+
+/* palette: https://coolors.co/dd6e42-e8dab2-4f6d7a-c0d6df-eaeaea */
+
+.main-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background-color: #DD6E42;
+	color: white;
+	padding: 2rem;
+}
+
+@media screen and (min-width: 60rem) {
+	.main {
+		max-width: 60rem;
+		margin-right: auto;
+		margin-left: auto;
+	}
+}
+
+.main {
+	margin-top: 3rem;
+	padding: 3rem;
+}
+
+.rec-list-header {
+	text-transform: uppercase;
+	font-size: 1.6rem;
+	text-align: center;
+	color: #777;
+	font-weight: normal;
+	margin: 2rem;
+}
+
+.rec-list-count {
+	color: #DD6E42;
+}
+
+.rec {
+	display: flex;
+	background-color: #eee;
+	padding: 2rem;
+	margin-bottom: 1rem;
+	border-radius: 0.4rem;
+}
+
+.rec-img {
+	background-color: #ddd;
+	border-radius: 0.4rem;
+	margin-right: 1rem;
+}
+
+.rec-title {
+	color: #4F6D7A;
+	font-weight: bold;
+	font-size: 2rem;
+	display: block;
+	margin-bottom: 1rem;
+}

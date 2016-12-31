@@ -1,6 +1,11 @@
 <h1 class="rec-list-header">We found <span class="rec-list-count">{{$ctrl.recommendations.length}}</span> songs for you</h1>
-<div class="rec-list" ng-repeat="recommendation in $ctrl.recommendations track by recommendation.music">
-	<div class="rec">
-		{{ recommendation.music }}
+<div class="rec-list">
+	<div class="rec" ng-repeat="recommendation in $ctrl.recommendations track by recommendation.music">
+		<img class="rec-img" ng-src="https://robohash.org/{{ recommendation.music }}?size=100x100" alt="Album cover for {{ recommendation.music }}" />
+		<div class="rec-body">
+			<span class="rec-title">{{ recommendation.music }}</span>
+			<span class="rec-reason">{{ recommendation.explanation }}</span>
+		</div>
+		<span></span>
 	</div>
 </div>
