@@ -9,7 +9,6 @@ const user = 'a';
 
 describe('app', () => {
 	it('can bootstrap and recommend', () => {
-		// as specified in script.md
 		return bootstrap(app).then(() => {
 			return request(app)
 				.get(`/recommendations?user=${user}`)
