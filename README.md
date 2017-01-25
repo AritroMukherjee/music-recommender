@@ -1,5 +1,7 @@
 # Music recommender
 
+[![Build Status](https://travis-ci.org/wachunga/music-recommender.svg?branch=master)](https://travis-ci.org/wachunga/music-recommender)
+
 A recommendation engine for a fictional social music player service. This service does not have explicit ratings; the only inputs are:
   * what the user has listened to
   * which other users they follow
