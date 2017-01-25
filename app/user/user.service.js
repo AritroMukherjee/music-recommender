@@ -2,8 +2,8 @@
 
 angular
 	.module('user')
-	.factory('User', function () {
-		let currentUser = 'a'; // hard-coded for now
+	.factory('User', () => {
+		const currentUser = 'a'; // hard-coded for now
 		return {
 			getCurrent: () => currentUser
 		};

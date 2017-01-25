@@ -11,4 +11,4 @@ angular
 				this.recommendations = response.data.list;
 			});
 		}
-});
+	});
